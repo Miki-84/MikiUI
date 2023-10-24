@@ -14,20 +14,20 @@ from PIL.PngImagePlugin import PngInfo
 import numpy as np
 import safetensors.torch
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "comfy"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "Miki"))
 
 
-import comfy.diffusers_load
-import comfy.samplers
-import comfy.sample
-import comfy.sd
-import comfy.utils
-import comfy.controlnet
+import Miki.diffusers_load
+import Miki.samplers
+import Miki.sample
+import Miki.sd
+import Miki.utils
+import Miki.controlnet
 
-import comfy.clip_vision
+import Miki.clip_vision
 
-import comfy.model_management
-from comfy.cli_args import args
+import Miki.model_management
+from Miki.cli_args import args
 
 import importlib
 
@@ -35,10 +35,10 @@ import folder_paths
 import latent_preview
 
 def before_node_execution():
-    comfy.model_management.throw_exception_if_processing_interrupted()
+    Miki.model_management.throw_exception_if_processing_interrupted()
 
 def interrupt_processing(value=True):
-    comfy.model_management.interrupt_current_processing(value)
+    Miki.model_management.interrupt_current_processing(value)
 
 MAX_RESOLUTION=8192
 
@@ -366,7 +366,7 @@ class SaveLatent:
     @classmethod
     def INPUT_TYPES(s):
         return {"required": { "samples": ("LATENT", ),
-                              "filename_prefix": ("STRING", {"default": "latents/ComfyUI"})},
+                              "filename_prefix": ("STRING", {"default": "latents/Mikiui"})},
                 "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO"},
                 }
     RETURN_TYPES = ()
@@ -376,7 +376,7 @@ class SaveLatent:
 
     CATEGORY = "_for_testing"
 
-    def save(self, samples, filename_prefix="ComfyUI", prompt=None, extra_pnginfo=None):
+    def save(self, samples, filename_prefix="Mikiui", prompt=None, extra_pnginfo=None):
         full_output_folder, filename, counter, subfolder, filename_prefix = folder_paths.get_save_image_path(filename_prefix, self.output_dir)
 
         # support save metadata for latent sharing
@@ -406,7 +406,7 @@ class SaveLatent:
         output["latent_tensor"] = samples["samples"]
         output["latent_format_version_0"] = torch.tensor([])
 
-        comfy.utils.save_torch_file(output, file, metadata=metadata)
+        Miki.utils.save_torch_file(output, file, metadata=metadata)
         return { "ui": { "latents": results } }
 
 
@@ -459,7 +459,7 @@ class CheckpointLoader:
     def load_checkpoint(self, config_name, ckpt_name, output_vae=True, output_clip=True):
         config_path = folder_paths.get_full_path("configs", config_name)
         ckpt_path = folder_paths.get_full_path("checkpoints", ckpt_name)
-        return comfy.sd.load_checkpoint(config_path, ckpt_path, output_vae=True, output_clip=True, embedding_directory=folder_paths.get_folder_paths("embeddings"))
+        return Miki.sd.load_checkpoint(config_path, ckpt_path, output_vae=True, output_clip=True, embedding_directory=folder_paths.get_folder_paths("embeddings"))
 
 class CheckpointLoaderSimple:
     @classmethod
@@ -473,7 +473,7 @@ class CheckpointLoaderSimple:
 
     def load_checkpoint(self, ckpt_name, output_vae=True, output_clip=True):
         ckpt_path = folder_paths.get_full_path("checkpoints", ckpt_name)
-        out = comfy.sd.load_checkpoint_guess_config(ckpt_path, output_vae=True, output_clip=True, embedding_directory=folder_paths.get_folder_paths("embeddings"))
+        out = Miki.sd.load_checkpoint_guess_config(ckpt_path, output_vae=True, output_clip=True, embedding_directory=folder_paths.get_folder_paths("embeddings"))
         return out[:3]
 
 class DiffusersLoader:
@@ -500,7 +500,7 @@ class DiffusersLoader:
                     model_path = path
                     break
 
-        return comfy.diffusers_load.load_diffusers(model_path, output_vae=output_vae, output_clip=output_clip, embedding_directory=folder_paths.get_folder_paths("embeddings"))
+        return Miki.diffusers_load.load_diffusers(model_path, output_vae=output_vae, output_clip=output_clip, embedding_directory=folder_paths.get_folder_paths("embeddings"))
 
 
 class unCLIPCheckpointLoader:
@@ -515,7 +515,7 @@ class unCLIPCheckpointLoader:
 
     def load_checkpoint(self, ckpt_name, output_vae=True, output_clip=True):
         ckpt_path = folder_paths.get_full_path("checkpoints", ckpt_name)
-        out = comfy.sd.load_checkpoint_guess_config(ckpt_path, output_vae=True, output_clip=True, output_clipvision=True, embedding_directory=folder_paths.get_folder_paths("embeddings"))
+        out = Miki.sd.load_checkpoint_guess_config(ckpt_path, output_vae=True, output_clip=True, output_clipvision=True, embedding_directory=folder_paths.get_folder_paths("embeddings"))
         return out
 
 class CLIPSetLastLayer:
@@ -566,10 +566,10 @@ class LoraLoader:
                 del temp
 
         if lora is None:
-            lora = comfy.utils.load_torch_file(lora_path, safe_load=True)
+            lora = Miki.utils.load_torch_file(lora_path, safe_load=True)
             self.loaded_lora = (lora_path, lora)
 
-        model_lora, clip_lora = comfy.sd.load_lora_for_models(model, clip, lora, strength_model, strength_clip)
+        model_lora, clip_lora = Miki.sd.load_lora_for_models(model, clip, lora, strength_model, strength_clip)
         return (model_lora, clip_lora)
 
 class VAELoader:
@@ -584,8 +584,8 @@ class VAELoader:
     #TODO: scale factor?
     def load_vae(self, vae_name):
         vae_path = folder_paths.get_full_path("vae", vae_name)
-        sd = comfy.utils.load_torch_file(vae_path)
-        vae = comfy.sd.VAE(sd=sd)
+        sd = Miki.utils.load_torch_file(vae_path)
+        vae = Miki.sd.VAE(sd=sd)
         return (vae,)
 
 class ControlNetLoader:
@@ -600,7 +600,7 @@ class ControlNetLoader:
 
     def load_controlnet(self, control_net_name):
         controlnet_path = folder_paths.get_full_path("controlnet", control_net_name)
-        controlnet = comfy.controlnet.load_controlnet(controlnet_path)
+        controlnet = Miki.controlnet.load_controlnet(controlnet_path)
         return (controlnet,)
 
 class DiffControlNetLoader:
@@ -616,7 +616,7 @@ class DiffControlNetLoader:
 
     def load_controlnet(self, model, control_net_name):
         controlnet_path = folder_paths.get_full_path("controlnet", control_net_name)
-        controlnet = comfy.controlnet.load_controlnet(controlnet_path, model)
+        controlnet = Miki.controlnet.load_controlnet(controlnet_path, model)
         return (controlnet,)
 
 
@@ -709,7 +709,7 @@ class UNETLoader:
 
     def load_unet(self, unet_name):
         unet_path = folder_paths.get_full_path("unet", unet_name)
-        model = comfy.sd.load_unet(unet_path)
+        model = Miki.sd.load_unet(unet_path)
         return (model,)
 
 class CLIPLoader:
@@ -724,7 +724,7 @@ class CLIPLoader:
 
     def load_clip(self, clip_name):
         clip_path = folder_paths.get_full_path("clip", clip_name)
-        clip = comfy.sd.load_clip(ckpt_paths=[clip_path], embedding_directory=folder_paths.get_folder_paths("embeddings"))
+        clip = Miki.sd.load_clip(ckpt_paths=[clip_path], embedding_directory=folder_paths.get_folder_paths("embeddings"))
         return (clip,)
 
 class DualCLIPLoader:
@@ -740,7 +740,7 @@ class DualCLIPLoader:
     def load_clip(self, clip_name1, clip_name2):
         clip_path1 = folder_paths.get_full_path("clip", clip_name1)
         clip_path2 = folder_paths.get_full_path("clip", clip_name2)
-        clip = comfy.sd.load_clip(ckpt_paths=[clip_path1, clip_path2], embedding_directory=folder_paths.get_folder_paths("embeddings"))
+        clip = Miki.sd.load_clip(ckpt_paths=[clip_path1, clip_path2], embedding_directory=folder_paths.get_folder_paths("embeddings"))
         return (clip,)
 
 class CLIPVisionLoader:
@@ -755,7 +755,7 @@ class CLIPVisionLoader:
 
     def load_clip(self, clip_name):
         clip_path = folder_paths.get_full_path("clip_vision", clip_name)
-        clip_vision = comfy.clip_vision.load(clip_path)
+        clip_vision = Miki.clip_vision.load(clip_path)
         return (clip_vision,)
 
 class CLIPVisionEncode:
@@ -785,7 +785,7 @@ class StyleModelLoader:
 
     def load_style_model(self, style_model_name):
         style_model_path = folder_paths.get_full_path("style_models", style_model_name)
-        style_model = comfy.sd.load_style_model(style_model_path)
+        style_model = Miki.sd.load_style_model(style_model_path)
         return (style_model,)
 
 
@@ -850,7 +850,7 @@ class GLIGENLoader:
 
     def load_gligen(self, gligen_name):
         gligen_path = folder_paths.get_full_path("gligen", gligen_name)
-        gligen = comfy.sd.load_gligen(gligen_path)
+        gligen = Miki.sd.load_gligen(gligen_path)
         return (gligen,)
 
 class GLIGENTextBoxApply:
@@ -992,7 +992,7 @@ class LatentUpscale:
                 width = max(64, width)
                 height = max(64, height)
 
-            s["samples"] = comfy.utils.common_upscale(samples["samples"], width // 8, height // 8, upscale_method, crop)
+            s["samples"] = Miki.utils.common_upscale(samples["samples"], width // 8, height // 8, upscale_method, crop)
         return (s,)
 
 class LatentUpscaleBy:
@@ -1011,7 +1011,7 @@ class LatentUpscaleBy:
         s = samples.copy()
         width = round(samples["samples"].shape[3] * scale_by)
         height = round(samples["samples"].shape[2] * scale_by)
-        s["samples"] = comfy.utils.common_upscale(samples["samples"], width, height, upscale_method, "disabled")
+        s["samples"] = Miki.utils.common_upscale(samples["samples"], width, height, upscale_method, "disabled")
         return (s,)
 
 class LatentRotate:
@@ -1127,7 +1127,7 @@ class LatentBlend:
 
         if samples1.shape != samples2.shape:
             samples2.permute(0, 3, 1, 2)
-            samples2 = comfy.utils.common_upscale(samples2, samples1.shape[3], samples1.shape[2], 'bicubic', crop='center')
+            samples2 = Miki.utils.common_upscale(samples2, samples1.shape[3], samples1.shape[2], 'bicubic', crop='center')
             samples2.permute(0, 2, 3, 1)
 
         samples_blended = self.blend_mode(samples1, samples2, blend_mode)
@@ -1196,15 +1196,15 @@ def common_ksampler(model, seed, steps, cfg, sampler_name, scheduler, positive, 
         noise = torch.zeros(latent_image.size(), dtype=latent_image.dtype, layout=latent_image.layout, device="cpu")
     else:
         batch_inds = latent["batch_index"] if "batch_index" in latent else None
-        noise = comfy.sample.prepare_noise(latent_image, seed, batch_inds)
+        noise = Miki.sample.prepare_noise(latent_image, seed, batch_inds)
 
     noise_mask = None
     if "noise_mask" in latent:
         noise_mask = latent["noise_mask"]
 
     callback = latent_preview.prepare_callback(model, steps)
-    disable_pbar = not comfy.utils.PROGRESS_BAR_ENABLED
-    samples = comfy.sample.sample(model, noise, steps, cfg, sampler_name, scheduler, positive, negative, latent_image,
+    disable_pbar = not Miki.utils.PROGRESS_BAR_ENABLED
+    samples = Miki.sample.sample(model, noise, steps, cfg, sampler_name, scheduler, positive, negative, latent_image,
                                   denoise=denoise, disable_noise=disable_noise, start_step=start_step, last_step=last_step,
                                   force_full_denoise=force_full_denoise, noise_mask=noise_mask, callback=callback, disable_pbar=disable_pbar, seed=seed)
     out = latent.copy()
@@ -1219,8 +1219,8 @@ class KSampler:
                     "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
                     "steps": ("INT", {"default": 20, "min": 1, "max": 10000}),
                     "cfg": ("FLOAT", {"default": 8.0, "min": 0.0, "max": 100.0, "step":0.5, "round": 0.01}),
-                    "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
-                    "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
+                    "sampler_name": (Miki.samplers.KSampler.SAMPLERS, ),
+                    "scheduler": (Miki.samplers.KSampler.SCHEDULERS, ),
                     "positive": ("CONDITIONING", ),
                     "negative": ("CONDITIONING", ),
                     "latent_image": ("LATENT", ),
@@ -1245,8 +1245,8 @@ class KSamplerAdvanced:
                     "noise_seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
                     "steps": ("INT", {"default": 20, "min": 1, "max": 10000}),
                     "cfg": ("FLOAT", {"default": 8.0, "min": 0.0, "max": 100.0, "step":0.5, "round": 0.01}),
-                    "sampler_name": (comfy.samplers.KSampler.SAMPLERS, ),
-                    "scheduler": (comfy.samplers.KSampler.SCHEDULERS, ),
+                    "sampler_name": (Miki.samplers.KSampler.SAMPLERS, ),
+                    "scheduler": (Miki.samplers.KSampler.SCHEDULERS, ),
                     "positive": ("CONDITIONING", ),
                     "negative": ("CONDITIONING", ),
                     "latent_image": ("LATENT", ),
@@ -1280,7 +1280,7 @@ class SaveImage:
     def INPUT_TYPES(s):
         return {"required": 
                     {"images": ("IMAGE", ),
-                     "filename_prefix": ("STRING", {"default": "ComfyUI"})},
+                     "filename_prefix": ("STRING", {"default": "Mikiui"})},
                 "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO"},
                 }
 
@@ -1291,7 +1291,7 @@ class SaveImage:
 
     CATEGORY = "image"
 
-    def save_images(self, images, filename_prefix="ComfyUI", prompt=None, extra_pnginfo=None):
+    def save_images(self, images, filename_prefix="Mikiui", prompt=None, extra_pnginfo=None):
         filename_prefix += self.prefix_append
         full_output_folder, filename, counter, subfolder, filename_prefix = folder_paths.get_save_image_path(filename_prefix, self.output_dir, images[0].shape[1], images[0].shape[0])
         results = list()
@@ -1449,7 +1449,7 @@ class ImageScale:
             elif height == 0:
                 height = max(1, round(samples.shape[2] * width / samples.shape[3]))
 
-            s = comfy.utils.common_upscale(samples, width, height, upscale_method, crop)
+            s = Miki.utils.common_upscale(samples, width, height, upscale_method, crop)
             s = s.movedim(1,-1)
         return (s,)
 
@@ -1469,7 +1469,7 @@ class ImageScaleBy:
         samples = image.movedim(-1,1)
         width = round(samples.shape[3] * scale_by)
         height = round(samples.shape[2] * scale_by)
-        s = comfy.utils.common_upscale(samples, width, height, upscale_method, "disabled")
+        s = Miki.utils.common_upscale(samples, width, height, upscale_method, "disabled")
         s = s.movedim(1,-1)
         return (s,)
 
@@ -1501,7 +1501,7 @@ class ImageBatch:
 
     def batch(self, image1, image2):
         if image1.shape[1:] != image2.shape[1:]:
-            image2 = comfy.utils.common_upscale(image2.movedim(-1,1), image1.shape[2], image1.shape[1], "bilinear", "center").movedim(1,-1)
+            image2 = Miki.utils.common_upscale(image2.movedim(-1,1), image1.shape[2], image1.shape[1], "bilinear", "center").movedim(1,-1)
         s = torch.cat((image1, image2), dim=0)
         return (s,)
 
@@ -1782,7 +1782,7 @@ def load_custom_nodes():
         print()
 
 def init_custom_nodes():
-    extras_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "comfy_extras")
+    extras_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Miki_extras")
     extras_files = [
         "nodes_latent.py",
         "nodes_hypernetwork.py",

@@ -1,15 +1,15 @@
-import { ComfyLogging } from "./logging.js";
-import { ComfyWidgets } from "./widgets.js";
-import { ComfyUI, $el } from "./ui.js";
+import { MikiLogging } from "./logging.js";
+import { MikiWidgets } from "./widgets.js";
+import { Mikiui, $el } from "./ui.js";
 import { api } from "./api.js";
 import { defaultGraph } from "./defaultGraph.js";
 import { getPngMetadata, importA1111, getLatentMetadata } from "./pnginfo.js";
 
 /**
- * @typedef {import("types/comfy").ComfyExtension} ComfyExtension
+ * @typedef {import("types/Miki").MikiExtension} MikiExtension
  */
 
-export class ComfyApp {
+export class MikiApp {
 	/**
 	 * List of entries to queue
 	 * @type {{number: number, batchCount: number}[]}
@@ -31,12 +31,12 @@ export class ComfyApp {
 	static clipspace_return_node = null;
 
 	constructor() {
-		this.ui = new ComfyUI(this);
-		this.logging = new ComfyLogging(this);
+		this.ui = new Mikiui(this);
+		this.logging = new MikiLogging(this);
 
 		/**
 		 * List of extensions that are registered with the app
-		 * @type {ComfyExtension[]}
+		 * @type {MikiExtension[]}
 		 */
 		this.extensions = [];
 
@@ -60,7 +60,7 @@ export class ComfyApp {
 	}
 
 	getPreviewFormatParam() {
-		let preview_format = this.ui.settings.getSettingValue("Comfy.PreviewFormat");
+		let preview_format = this.ui.settings.getSettingValue("Miki.PreviewFormat");
 		if(preview_format)
 			return `&preview=${preview_format}`;
 		else
@@ -72,13 +72,13 @@ export class ComfyApp {
 	}
 
 	static onClipspaceEditorSave() {
-		if(ComfyApp.clipspace_return_node) {
-			ComfyApp.pasteFromClipspace(ComfyApp.clipspace_return_node);
+		if(MikiApp.clipspace_return_node) {
+			MikiApp.pasteFromClipspace(MikiApp.clipspace_return_node);
 		}
 	}
 
 	static onClipspaceEditorClosed() {
-		ComfyApp.clipspace_return_node = null;
+		MikiApp.clipspace_return_node = null;
 	}
 
 	static copyToClipspace(node) {
@@ -105,7 +105,7 @@ export class ComfyApp {
 			selectedIndex = node.imageIndex;
 		}
 
-		ComfyApp.clipspace = {
+		MikiApp.clipspace = {
 			'widgets': widgets,
 			'imgs': imgs,
 			'original_imgs': orig_imgs,
@@ -114,42 +114,42 @@ export class ComfyApp {
 			'img_paste_mode': 'selected' // reset to default im_paste_mode state on copy action
 		};
 
-		ComfyApp.clipspace_return_node = null;
+		MikiApp.clipspace_return_node = null;
 
-		if(ComfyApp.clipspace_invalidate_handler) {
-			ComfyApp.clipspace_invalidate_handler();
+		if(MikiApp.clipspace_invalidate_handler) {
+			MikiApp.clipspace_invalidate_handler();
 		}
 	}
 
 	static pasteFromClipspace(node) {
-		if(ComfyApp.clipspace) {
+		if(MikiApp.clipspace) {
 			// image paste
-			if(ComfyApp.clipspace.imgs && node.imgs) {
-				if(node.images && ComfyApp.clipspace.images) {
-					if(ComfyApp.clipspace['img_paste_mode'] == 'selected') {
-						node.images = [ComfyApp.clipspace.images[ComfyApp.clipspace['selectedIndex']]];
+			if(MikiApp.clipspace.imgs && node.imgs) {
+				if(node.images && MikiApp.clipspace.images) {
+					if(MikiApp.clipspace['img_paste_mode'] == 'selected') {
+						node.images = [MikiApp.clipspace.images[MikiApp.clipspace['selectedIndex']]];
 					}
 					else {
-						node.images = ComfyApp.clipspace.images;
+						node.images = MikiApp.clipspace.images;
 					}
 
 					if(app.nodeOutputs[node.id + ""])
 						app.nodeOutputs[node.id + ""].images = node.images;
 				}
 
-				if(ComfyApp.clipspace.imgs) {
+				if(MikiApp.clipspace.imgs) {
 					// deep-copy to cut link with clipspace
-					if(ComfyApp.clipspace['img_paste_mode'] == 'selected') {
+					if(MikiApp.clipspace['img_paste_mode'] == 'selected') {
 						const img = new Image();
-						img.src = ComfyApp.clipspace.imgs[ComfyApp.clipspace['selectedIndex']].src;
+						img.src = MikiApp.clipspace.imgs[MikiApp.clipspace['selectedIndex']].src;
 						node.imgs = [img];
 						node.imageIndex = 0;
 					}
 					else {
 						const imgs = [];
-						for(let i=0; i<ComfyApp.clipspace.imgs.length; i++) {
+						for(let i=0; i<MikiApp.clipspace.imgs.length; i++) {
 							imgs[i] = new Image();
-							imgs[i].src = ComfyApp.clipspace.imgs[i].src;
+							imgs[i].src = MikiApp.clipspace.imgs[i].src;
 							node.imgs = imgs;
 						}
 					}
@@ -157,8 +157,8 @@ export class ComfyApp {
 			}
 
 			if(node.widgets) {
-				if(ComfyApp.clipspace.images) {
-					const clip_image = ComfyApp.clipspace.images[ComfyApp.clipspace['selectedIndex']];
+				if(MikiApp.clipspace.images) {
+					const clip_image = MikiApp.clipspace.images[MikiApp.clipspace['selectedIndex']];
 					const index = node.widgets.findIndex(obj => obj.name === 'image');
 					if(index >= 0) {
 						if(node.widgets[index].type != 'image' && typeof node.widgets[index].value == "string" && clip_image.filename) {
@@ -169,8 +169,8 @@ export class ComfyApp {
 						}
 					}
 				}
-				if(ComfyApp.clipspace.widgets) {
-					ComfyApp.clipspace.widgets.forEach(({ type, name, value }) => {
+				if(MikiApp.clipspace.widgets) {
+					MikiApp.clipspace.widgets.forEach(({ type, name, value }) => {
 						const prop = Object.values(node.widgets).find(obj => obj.type === type && obj.name === name);
 						if (prop && prop.type != 'button') {
 							if(prop.type != 'image' && typeof prop.value == "string" && value.filename) {
@@ -191,7 +191,7 @@ export class ComfyApp {
 
 	/**
 	 * Invoke an extension callback
-	 * @param {keyof ComfyExtension} method The extension callback to execute
+	 * @param {keyof MikiExtension} method The extension callback to execute
 	 * @param  {any[]} args Any arguments to pass to the callback
 	 * @returns
 	 */
@@ -290,26 +290,26 @@ export class ComfyApp {
 				});
 
 			// prevent conflict of clipspace content
-			if(!ComfyApp.clipspace_return_node) {
+			if(!MikiApp.clipspace_return_node) {
 				options.push({
 						content: "Copy (Clipspace)",
-						callback: (obj) => { ComfyApp.copyToClipspace(this); }
+						callback: (obj) => { MikiApp.copyToClipspace(this); }
 					});
 
-				if(ComfyApp.clipspace != null) {
+				if(MikiApp.clipspace != null) {
 					options.push({
 							content: "Paste (Clipspace)",
-							callback: () => { ComfyApp.pasteFromClipspace(this); }
+							callback: () => { MikiApp.pasteFromClipspace(this); }
 						});
 				}
 
-				if(ComfyApp.isImageNode(this)) {
+				if(MikiApp.isImageNode(this)) {
 					options.push({
 							content: "Open in MaskEditor",
 							callback: (obj) => {
-								ComfyApp.copyToClipspace(this);
-								ComfyApp.clipspace_return_node = this;
-								ComfyApp.open_maskeditor();
+								MikiApp.copyToClipspace(this);
+								MikiApp.clipspace_return_node = this;
+								MikiApp.open_maskeditor();
 							}
 						});
 				}
@@ -763,7 +763,7 @@ export class ComfyApp {
 					// If an image node is selected, paste into it
 					if (this.canvas.current_node &&
 						this.canvas.current_node.is_selected &&
-						ComfyApp.isImageNode(this.canvas.current_node)) {
+						MikiApp.isImageNode(this.canvas.current_node)) {
 						imageNode = this.canvas.current_node;
 					}
 
@@ -1230,7 +1230,7 @@ export class ComfyApp {
 	 */
 	async #loadExtensions() {
 	    const extensions = await api.getExtensions();
-	    this.logging.addEntry("Comfy.App", "debug", { Extensions: extensions });
+	    this.logging.addEntry("Miki.App", "debug", { Extensions: extensions });
 	
 	    const extensionPromises = extensions.map(async ext => {
 	        try {
@@ -1273,7 +1273,7 @@ export class ComfyApp {
 		this.graph.start();
 
 		function resizeCanvas() {
-			// Limit minimal scale to 1, see https://github.com/comfyanonymous/ComfyUI/pull/845
+			// Limit minimal scale to 1, see https://github.com/Mikianonymous/Mikiui/pull/845
 			const scale = Math.max(window.devicePixelRatio, 1);
 			const { width, height } = canvasEl.getBoundingClientRect();
 			canvasEl.width = Math.round(width * scale);
@@ -1338,7 +1338,7 @@ export class ComfyApp {
 		// Generate list of known widgets
 		const widgets = Object.assign(
 			{},
-			ComfyWidgets,
+			MikiWidgets,
 			...(await this.#invokeExtensionsAsync("getCustomWidgets")).filter(Boolean)
 		);
 
@@ -1346,7 +1346,7 @@ export class ComfyApp {
 		for (const nodeId in defs) {
 			const nodeData = defs[nodeId];
 			const node = Object.assign(
-				function ComfyNode() {
+				function MikiNode() {
 					var inputs = nodeData["input"]["required"];
 					if (nodeData["input"]["optional"] != undefined){
 					    inputs = Object.assign({}, nodeData["input"]["required"], nodeData["input"]["optional"])
@@ -1400,11 +1400,11 @@ export class ComfyApp {
 				},
 				{
 					title: nodeData.display_name || nodeData.name,
-					comfyClass: nodeData.name,
+					MikiClass: nodeData.name,
 					nodeData
 				}
 			);
-			node.prototype.comfyClass = nodeData.name;
+			node.prototype.MikiClass = nodeData.name;
 
 			this.#addNodeContextMenuHandler(node);
 			this.#addDrawBackgroundHandler(node, app);
@@ -1575,7 +1575,7 @@ export class ComfyApp {
 					(t) => `<li>${t}</li>`
 				).join("")}</ul>Nodes that have failed to load will show as red on the graph.`
 			);
-			this.logging.addEntry("Comfy.App", "warn", {
+			this.logging.addEntry("Miki.App", "warn", {
 				MissingNodes: missingNodeTypes,
 			});
 		}
@@ -1664,7 +1664,7 @@ export class ComfyApp {
 
 			output[String(node.id)] = {
 				inputs,
-				class_type: node.comfyClass,
+				class_type: node.MikiClass,
 			};
 		}
 
@@ -1810,8 +1810,8 @@ export class ComfyApp {
 	}
 
 	/**
-	 * Registers a Comfy web extension with the app
-	 * @param {ComfyExtension} extension
+	 * Registers a Miki web extension with the app
+	 * @param {MikiExtension} extension
 	 */
 	registerExtension(extension) {
 		if (!extension.name) {
@@ -1873,4 +1873,4 @@ export class ComfyApp {
 	}
 }
 
-export const app = new ComfyApp();
+export const app = new MikiApp();

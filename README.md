@@ -1,13 +1,13 @@
-ComfyUI
+Mikiui
 =======
 The most powerful and modular stable diffusion GUI and backend.
 -----------
-![ComfyUI Screenshot](comfyui_screenshot.png)
+![Mikiui Screenshot](Mikiui_screenshot.png)
 
-This ui will let you design and execute advanced stable diffusion pipelines using a graph/nodes/flowchart based interface. For some workflow examples and see what ComfyUI can do you can check out:
-### [ComfyUI Examples](https://comfyanonymous.github.io/ComfyUI_examples/)
+This ui will let you design and execute advanced stable diffusion pipelines using a graph/nodes/flowchart based interface. For some workflow examples and see what Mikiui can do you can check out:
+### [Mikiui Examples](https://Mikianonymous.github.io/Mikiui_examples/)
 
-### [Installing ComfyUI](#installing)
+### [Installing Mikiui](#installing)
 
 ## Features
 - Nodes/graph/flowchart interface to experiment and create complex Stable Diffusion workflows without needing to code anything.
@@ -18,24 +18,24 @@ This ui will let you design and execute advanced stable diffusion pipelines usin
 - Works even if you don't have a GPU with: ```--cpu``` (slow)
 - Can load ckpt, safetensors and diffusers models/checkpoints. Standalone VAEs and CLIP models.
 - Embeddings/Textual inversion
-- [Loras (regular, locon and loha)](https://comfyanonymous.github.io/ComfyUI_examples/lora/)
-- [Hypernetworks](https://comfyanonymous.github.io/ComfyUI_examples/hypernetworks/)
+- [Loras (regular, locon and loha)](https://Mikianonymous.github.io/Mikiui_examples/lora/)
+- [Hypernetworks](https://Mikianonymous.github.io/Mikiui_examples/hypernetworks/)
 - Loading full workflows (with seeds) from generated PNG files.
 - Saving/Loading workflows as Json files.
-- Nodes interface can be used to create complex workflows like one for [Hires fix](https://comfyanonymous.github.io/ComfyUI_examples/2_pass_txt2img/) or much more advanced ones.
-- [Area Composition](https://comfyanonymous.github.io/ComfyUI_examples/area_composition/)
-- [Inpainting](https://comfyanonymous.github.io/ComfyUI_examples/inpaint/) with both regular and inpainting models.
-- [ControlNet and T2I-Adapter](https://comfyanonymous.github.io/ComfyUI_examples/controlnet/)
-- [Upscale Models (ESRGAN, ESRGAN variants, SwinIR, Swin2SR, etc...)](https://comfyanonymous.github.io/ComfyUI_examples/upscale_models/)
-- [unCLIP Models](https://comfyanonymous.github.io/ComfyUI_examples/unclip/)
-- [GLIGEN](https://comfyanonymous.github.io/ComfyUI_examples/gligen/)
-- [Model Merging](https://comfyanonymous.github.io/ComfyUI_examples/model_merging/)
+- Nodes interface can be used to create complex workflows like one for [Hires fix](https://Mikianonymous.github.io/Mikiui_examples/2_pass_txt2img/) or much more advanced ones.
+- [Area Composition](https://Mikianonymous.github.io/Mikiui_examples/area_composition/)
+- [Inpainting](https://Mikianonymous.github.io/Mikiui_examples/inpaint/) with both regular and inpainting models.
+- [ControlNet and T2I-Adapter](https://Mikianonymous.github.io/Mikiui_examples/controlnet/)
+- [Upscale Models (ESRGAN, ESRGAN variants, SwinIR, Swin2SR, etc...)](https://Mikianonymous.github.io/Mikiui_examples/upscale_models/)
+- [unCLIP Models](https://Mikianonymous.github.io/Mikiui_examples/unclip/)
+- [GLIGEN](https://Mikianonymous.github.io/Mikiui_examples/gligen/)
+- [Model Merging](https://Mikianonymous.github.io/Mikiui_examples/model_merging/)
 - Latent previews with [TAESD](#how-to-show-high-quality-previews)
 - Starts up very fast.
 - Works fully offline: will never download anything.
 - [Config file](extra_model_paths.yaml.example) to set the search paths for models.
 
-Workflow examples can be found on the [Examples page](https://comfyanonymous.github.io/ComfyUI_examples/)
+Workflow examples can be found on the [Examples page](https://Mikianonymous.github.io/Mikiui_examples/)
 
 ## Shortcuts
 
@@ -68,19 +68,19 @@ Ctrl can also be replaced with Cmd instead for macOS users
 
 ## Windows
 
-There is a portable standalone build for Windows that should work for running on Nvidia GPUs or for running on your CPU only on the [releases page](https://github.com/comfyanonymous/ComfyUI/releases).
+There is a portable standalone build for Windows that should work for running on Nvidia GPUs or for running on your CPU only on the [releases page](https://github.com/Mikianonymous/Mikiui/releases).
 
-### [Direct link to download](https://github.com/comfyanonymous/ComfyUI/releases/download/latest/ComfyUI_windows_portable_nvidia_cu121_or_cpu.7z)
+### [Direct link to download](https://github.com/Mikianonymous/Mikiui/releases/download/latest/Mikiui_windows_portable_nvidia_cu121_or_cpu.7z)
 
-Simply download, extract with [7-Zip](https://7-zip.org) and run. Make sure you put your Stable Diffusion checkpoints/models (the huge ckpt/safetensors files) in: ComfyUI\models\checkpoints
+Simply download, extract with [7-Zip](https://7-zip.org) and run. Make sure you put your Stable Diffusion checkpoints/models (the huge ckpt/safetensors files) in: Mikiui\models\checkpoints
 
-#### How do I share models between another UI and ComfyUI?
+#### How do I share models between another UI and Mikiui?
 
-See the [Config file](extra_model_paths.yaml.example) to set the search paths for models. In the standalone windows build you can find this file in the ComfyUI directory. Rename this file to extra_model_paths.yaml and edit it with your favorite text editor.
+See the [Config file](extra_model_paths.yaml.example) to set the search paths for models. In the standalone windows build you can find this file in the Mikiui directory. Rename this file to extra_model_paths.yaml and edit it with your favorite text editor.
 
 ## Jupyter Notebook
 
-To run it on services like paperspace, kaggle or colab you can use my [Jupyter Notebook](notebooks/comfyui_colab.ipynb)
+To run it on services like paperspace, kaggle or colab you can use my [Jupyter Notebook](notebooks/Mikiui_colab.ipynb)
 
 ## Manual Install (Windows, Linux)
 
@@ -116,34 +116,34 @@ And install it again with the command above.
 
 ### Dependencies
 
-Install the dependencies by opening your terminal inside the ComfyUI folder and:
+Install the dependencies by opening your terminal inside the Mikiui folder and:
 
 ```pip install -r requirements.txt```
 
-After this you should have everything installed and can proceed to running ComfyUI.
+After this you should have everything installed and can proceed to running Mikiui.
 
 ### Others:
 
-#### [Intel Arc](https://github.com/comfyanonymous/ComfyUI/discussions/476)
+#### [Intel Arc](https://github.com/Mikianonymous/Mikiui/discussions/476)
 
 #### Apple Mac silicon
 
-You can install ComfyUI in Apple Mac silicon (M1 or M2) with any recent macOS version.
+You can install Mikiui in Apple Mac silicon (M1 or M2) with any recent macOS version.
 
 1. Install pytorch nightly. For instructions, read the [Accelerated PyTorch training on Mac](https://developer.apple.com/metal/pytorch/) Apple Developer guide (make sure to install the latest pytorch nightly).
-1. Follow the [ComfyUI manual installation](#manual-install-windows-linux) instructions for Windows and Linux.
-1. Install the ComfyUI [dependencies](#dependencies). If you have another Stable Diffusion UI [you might be able to reuse the dependencies](#i-already-have-another-ui-for-stable-diffusion-installed-do-i-really-have-to-install-all-of-these-dependencies).
-1. Launch ComfyUI by running `python main.py --force-fp16`. Note that --force-fp16 will only work if you installed the latest pytorch nightly.
+1. Follow the [Mikiui manual installation](#manual-install-windows-linux) instructions for Windows and Linux.
+1. Install the Mikiui [dependencies](#dependencies). If you have another Stable Diffusion UI [you might be able to reuse the dependencies](#i-already-have-another-ui-for-stable-diffusion-installed-do-i-really-have-to-install-all-of-these-dependencies).
+1. Launch Mikiui by running `python main.py --force-fp16`. Note that --force-fp16 will only work if you installed the latest pytorch nightly.
 
-> **Note**: Remember to add your models, VAE, LoRAs etc. to the corresponding Comfy folders, as discussed in [ComfyUI manual installation](#manual-install-windows-linux).
+> **Note**: Remember to add your models, VAE, LoRAs etc. to the corresponding Miki folders, as discussed in [Mikiui manual installation](#manual-install-windows-linux).
 
 #### DirectML (AMD Cards on Windows)
 
-```pip install torch-directml``` Then you can launch ComfyUI with: ```python main.py --directml```
+```pip install torch-directml``` Then you can launch Mikiui with: ```python main.py --directml```
 
 ### I already have another UI for Stable Diffusion installed do I really have to install all of these dependencies?
 
-You don't. If you have another UI installed and working with its own python venv you can use that venv to run ComfyUI. You can open up your favorite terminal and activate it:
+You don't. If you have another UI installed and working with its own python venv you can use that venv to run Mikiui. You can open up your favorite terminal and activate it:
 
 ```source path_to_other_sd_gui/venv/bin/activate```
 
@@ -153,7 +153,7 @@ With Powershell: ```"path_to_other_sd_gui\venv\Scripts\Activate.ps1"```
 
 With cmd.exe: ```"path_to_other_sd_gui\venv\Scripts\activate.bat"```
 
-And then you can use that terminal to run ComfyUI without installing any dependencies. Note that the venv folder might be called something else depending on the SD UI.
+And then you can use that terminal to run Mikiui without installing any dependencies. Note that the venv folder might be called something else depending on the SD UI.
 
 # Running
 
@@ -198,11 +198,11 @@ You can set this command line setting to disable the upcasting to fp32 in some c
 
 Use ```--preview-method auto``` to enable previews.
 
-The default installation includes a fast latent preview method that's low-resolution. To enable higher-quality previews with [TAESD](https://github.com/madebyollin/taesd), download the [taesd_decoder.pth](https://github.com/madebyollin/taesd/raw/main/taesd_decoder.pth) (for SD1.x and SD2.x) and [taesdxl_decoder.pth](https://github.com/madebyollin/taesd/raw/main/taesdxl_decoder.pth) (for SDXL) models and place them in the `models/vae_approx` folder. Once they're installed, restart ComfyUI to enable high-quality previews.
+The default installation includes a fast latent preview method that's low-resolution. To enable higher-quality previews with [TAESD](https://github.com/madebyollin/taesd), download the [taesd_decoder.pth](https://github.com/madebyollin/taesd/raw/main/taesd_decoder.pth) (for SD1.x and SD2.x) and [taesdxl_decoder.pth](https://github.com/madebyollin/taesd/raw/main/taesdxl_decoder.pth) (for SDXL) models and place them in the `models/vae_approx` folder. Once they're installed, restart Mikiui to enable high-quality previews.
 
 ## Support and dev channel
 
-[Matrix space: #comfyui_space:matrix.org](https://app.element.io/#/room/%23comfyui_space%3Amatrix.org) (it's like discord but open source).
+[Matrix space: #Mikiui_space:matrix.org](https://app.element.io/#/room/%23Mikiui_space%3Amatrix.org) (it's like discord but open source).
 
 # QA
 

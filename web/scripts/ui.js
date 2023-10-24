@@ -67,7 +67,7 @@ function dragElement(dragEl, settings) {
 	}).observe(dragEl);
 
 	function ensureInBounds() {
-		if (dragEl.classList.contains("comfy-menu-manual-pos")) {
+		if (dragEl.classList.contains("Miki-menu-manual-pos")) {
 			newPosX = Math.min(document.body.clientWidth - dragEl.clientWidth, Math.max(0, dragEl.offsetLeft));
 			newPosY = Math.min(document.body.clientHeight - dragEl.clientHeight, Math.max(0, dragEl.offsetTop));
 
@@ -93,7 +93,7 @@ function dragElement(dragEl, settings) {
 
 		if (savePos) {
 			localStorage.setItem(
-				"Comfy.MenuPosition",
+				"Miki.MenuPosition",
 				JSON.stringify({
 					x: dragEl.offsetLeft,
 					y: dragEl.offsetTop,
@@ -103,7 +103,7 @@ function dragElement(dragEl, settings) {
 	}
 
 	function restorePos() {
-		let pos = localStorage.getItem("Comfy.MenuPosition");
+		let pos = localStorage.getItem("Miki.MenuPosition");
 		if (pos) {
 			pos = JSON.parse(pos);
 			newPosX = pos.x;
@@ -115,7 +115,7 @@ function dragElement(dragEl, settings) {
 
 	let savePos = undefined;
 	settings.addSetting({
-		id: "Comfy.MenuPosition",
+		id: "Miki.MenuPosition",
 		name: "Save menu position",
 		type: "boolean",
 		defaultValue: savePos,
@@ -142,7 +142,7 @@ function dragElement(dragEl, settings) {
 		e = e || window.event;
 		e.preventDefault();
 
-		dragEl.classList.add("comfy-menu-manual-pos");
+		dragEl.classList.add("Miki-menu-manual-pos");
 
 		// calculate the new cursor position:
 		posDiffX = e.clientX - posStartX;
@@ -167,10 +167,10 @@ function dragElement(dragEl, settings) {
 	}
 }
 
-export class ComfyDialog {
+export class MikiDialog {
 	constructor() {
-		this.element = $el("div.comfy-modal", {parent: document.body}, [
-			$el("div.comfy-modal-content", [$el("p", {$: (p) => (this.textElement = p)}), ...this.createButtons()]),
+		this.element = $el("div.Miki-modal", {parent: document.body}, [
+			$el("div.Miki-modal-content", [$el("p", {$: (p) => (this.textElement = p)}), ...this.createButtons()]),
 		]);
 	}
 
@@ -198,14 +198,14 @@ export class ComfyDialog {
 	}
 }
 
-class ComfySettingsDialog extends ComfyDialog {
+class MikiSettingsDialog extends MikiDialog {
 	constructor() {
 		super();
 		this.element = $el("dialog", {
-			id: "comfy-settings-dialog",
+			id: "Miki-settings-dialog",
 			parent: document.body,
 		}, [
-			$el("table.comfy-modal-content.comfy-table", [
+			$el("table.Miki-modal-content.Miki-table", [
 				$el("caption", {textContent: "Settings"}),
 				$el("tbody", {$: (tbody) => (this.textElement = tbody)}),
 				$el("button", {
@@ -224,13 +224,13 @@ class ComfySettingsDialog extends ComfyDialog {
 	}
 
 	getSettingValue(id, defaultValue) {
-		const settingId = "Comfy.Settings." + id;
+		const settingId = "Miki.Settings." + id;
 		const v = localStorage[settingId];
 		return v == null ? defaultValue : JSON.parse(v);
 	}
 
 	setSettingValue(id, value) {
-		const settingId = "Comfy.Settings." + id;
+		const settingId = "Miki.Settings." + id;
 		localStorage[settingId] = JSON.stringify(value);
 	}
 
@@ -243,7 +243,7 @@ class ComfySettingsDialog extends ComfyDialog {
 			throw new Error(`Setting ${id} of type ${type} must have a unique ID.`);
 		}
 
-		const settingId = `Comfy.Settings.${id}`;
+		const settingId = `Miki.Settings.${id}`;
 		const v = localStorage[settingId];
 		let value = v == null ? defaultValue : JSON.parse(v);
 
@@ -269,7 +269,7 @@ class ComfySettingsDialog extends ComfyDialog {
 				const labelCell = $el("td", [
 					$el("label", {
 						for: htmlID,
-						classList: [tooltip !== "" ? "comfy-tooltip-indicator" : ""],
+						classList: [tooltip !== "" ? "Miki-tooltip-indicator" : ""],
 						textContent: name,
 					})
 				]);
@@ -428,7 +428,7 @@ class ComfySettingsDialog extends ComfyDialog {
 	}
 }
 
-class ComfyList {
+class MikiList {
 	#type;
 	#text;
 	#reverse;
@@ -437,7 +437,7 @@ class ComfyList {
 		this.#text = text;
 		this.#type = type || text.toLowerCase();
 		this.#reverse = reverse || false;
-		this.element = $el("div.comfy-list");
+		this.element = $el("div.Miki-list");
 		this.element.style.display = "none";
 	}
 
@@ -452,7 +452,7 @@ class ComfyList {
 				$el("h4", {
 					textContent: section,
 				}),
-				$el("div.comfy-list-items", [
+				$el("div.Miki-list-items", [
 					...(this.#reverse ? items[section].reverse() : items[section]).map((item) => {
 						// Allow items to specify a custom remove action (e.g. for interrupt current prompt)
 						const removeAction = item.remove || {
@@ -480,7 +480,7 @@ class ComfyList {
 					}),
 				]),
 			]),
-			$el("div.comfy-list-actions", [
+			$el("div.Miki-list-actions", [
 				$el("button", {
 					textContent: "Clear " + this.#text,
 					onclick: async () => {
@@ -522,16 +522,16 @@ class ComfyList {
 	}
 }
 
-export class ComfyUI {
+export class Mikiui {
 	constructor(app) {
 		this.app = app;
-		this.dialog = new ComfyDialog();
-		this.settings = new ComfySettingsDialog();
+		this.dialog = new MikiDialog();
+		this.settings = new MikiSettingsDialog();
 
 		this.batchCount = 1;
 		this.lastQueueSize = 0;
-		this.queue = new ComfyList("Queue");
-		this.history = new ComfyList("History", "history", true);
+		this.queue = new MikiList("Queue");
+		this.history = new MikiList("History", "history", true);
 
 		api.addEventListener("status", () => {
 			this.queue.update();
@@ -539,14 +539,14 @@ export class ComfyUI {
 		});
 
 		const confirmClear = this.settings.addSetting({
-			id: "Comfy.ConfirmClear",
+			id: "Miki.ConfirmClear",
 			name: "Require confirmation when clearing workflow",
 			type: "boolean",
 			defaultValue: true,
 		});
 
 		const promptFilename = this.settings.addSetting({
-			id: "Comfy.PromptFilename",
+			id: "Miki.PromptFilename",
 			name: "Prompt for filename when saving workflow",
 			type: "boolean",
 			defaultValue: true,
@@ -564,28 +564,28 @@ export class ComfyUI {
 		 * @type {string}
 		 */
 		const previewImage = this.settings.addSetting({
-			id: "Comfy.PreviewFormat",
+			id: "Miki.PreviewFormat",
 			name: "When displaying a preview in the image widget, convert it to a lightweight image, e.g. webp, jpeg, webp;50, etc.",
 			type: "text",
 			defaultValue: "",
 		});
 
 		this.settings.addSetting({
-			id: "Comfy.DisableSliders",
+			id: "Miki.DisableSliders",
 			name: "Disable sliders.",
 			type: "boolean",
 			defaultValue: false,
 		});
 
 		this.settings.addSetting({
-			id: "Comfy.DisableFloatRounding",
+			id: "Miki.DisableFloatRounding",
 			name: "Disable rounding floats (requires page reload).",
 			type: "boolean",
 			defaultValue: false,
 		});
 
 		this.settings.addSetting({
-			id: "Comfy.FloatRoundingPrecision",
+			id: "Miki.FloatRoundingPrecision",
 			name: "Decimal places [0 = auto] (requires page reload).",
 			type: "slider",
 			attrs: {
@@ -597,7 +597,7 @@ export class ComfyUI {
 		});
 
 		const fileInput = $el("input", {
-			id: "comfy-file-input",
+			id: "Miki-file-input",
 			type: "file",
 			accept: ".json,image/png,.latent,.safetensors",
 			style: {display: "none"},
@@ -607,7 +607,7 @@ export class ComfyUI {
 			},
 		});
 
-		this.menuContainer = $el("div.comfy-menu", {parent: document.body}, [
+		this.menuContainer = $el("div.Miki-menu", {parent: document.body}, [
 			$el("div.drag-handle", {
 				style: {
 					overflow: "hidden",
@@ -618,9 +618,9 @@ export class ComfyUI {
 			}, [
 				$el("span.drag-handle"),
 				$el("span", {$: (q) => (this.queueSize = q)}),
-				$el("button.comfy-settings-btn", {textContent: "⚙️", onclick: () => this.settings.show()}),
+				$el("button.Miki-settings-btn", {textContent: "⚙️", onclick: () => this.settings.show()}),
 			]),
-			$el("button.comfy-queue-btn", {
+			$el("button.Miki-queue-btn", {
 				id: "queue-button",
 				textContent: "Queue Prompt",
 				onclick: () => app.queuePrompt(0, this.batchCount),
@@ -680,7 +680,7 @@ export class ComfyUI {
 					}),
 				])
 			]),
-			$el("div.comfy-menu-btns", [
+			$el("div.Miki-menu-btns", [
 				$el("button", {
 					id: "queue-front-button",
 					textContent: "Queue Front",
@@ -688,7 +688,7 @@ export class ComfyUI {
 				}),
 				$el("button", {
 					$: (b) => (this.queue.button = b),
-					id: "comfy-view-queue-button",
+					id: "Miki-view-queue-button",
 					textContent: "View Queue",
 					onclick: () => {
 						this.history.hide();
@@ -697,7 +697,7 @@ export class ComfyUI {
 				}),
 				$el("button", {
 					$: (b) => (this.history.button = b),
-					id: "comfy-view-history-button",
+					id: "Miki-view-history-button",
 					textContent: "View History",
 					onclick: () => {
 						this.queue.hide();
@@ -708,7 +708,7 @@ export class ComfyUI {
 			this.queue.element,
 			this.history.element,
 			$el("button", {
-				id: "comfy-save-button",
+				id: "Miki-save-button",
 				textContent: "Save",
 				onclick: () => {
 					let filename = "workflow.json";
@@ -736,7 +736,7 @@ export class ComfyUI {
 				},
 			}),
 			$el("button", {
-				id: "comfy-dev-save-api-button",
+				id: "Miki-dev-save-api-button",
 				textContent: "Save (API Format)",
 				style: {width: "100%", display: "none"},
 				onclick: () => {
@@ -766,15 +766,15 @@ export class ComfyUI {
 					});
 				},
 			}),
-			$el("button", {id: "comfy-load-button", textContent: "Load", onclick: () => fileInput.click()}),
+			$el("button", {id: "Miki-load-button", textContent: "Load", onclick: () => fileInput.click()}),
 			$el("button", {
-				id: "comfy-refresh-button",
+				id: "Miki-refresh-button",
 				textContent: "Refresh",
 				onclick: () => app.refreshComboInNodes()
 			}),
-			$el("button", {id: "comfy-clipspace-button", textContent: "Clipspace", onclick: () => app.openClipspace()}),
+			$el("button", {id: "Miki-clipspace-button", textContent: "Clipspace", onclick: () => app.openClipspace()}),
 			$el("button", {
-				id: "comfy-clear-button", textContent: "Clear", onclick: () => {
+				id: "Miki-clear-button", textContent: "Clear", onclick: () => {
 					if (!confirmClear.value || confirm("Clear workflow?")) {
 						app.clean();
 						app.graph.clear();
@@ -782,7 +782,7 @@ export class ComfyUI {
 				}
 			}),
 			$el("button", {
-				id: "comfy-load-default-button", textContent: "Load Default", onclick: () => {
+				id: "Miki-load-default-button", textContent: "Load Default", onclick: () => {
 					if (!confirmClear.value || confirm("Load default workflow?")) {
 						app.loadGraphData()
 					}
@@ -791,11 +791,11 @@ export class ComfyUI {
 		]);
 
 		const devMode = this.settings.addSetting({
-			id: "Comfy.DevMode",
+			id: "Miki.DevMode",
 			name: "Enable Dev mode Options",
 			type: "boolean",
 			defaultValue: false,
-			onChange: function(value) { document.getElementById("comfy-dev-save-api-button").style.display = value ? "block" : "none"},
+			onChange: function(value) { document.getElementById("Miki-dev-save-api-button").style.display = value ? "block" : "none"},
 		});
 
 		dragElement(this.menuContainer, this.settings);

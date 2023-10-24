@@ -1,5 +1,5 @@
 import { app } from "../../scripts/app.js";
-import { ComfyDialog, $el } from "../../scripts/ui.js";
+import { MikiDialog, $el } from "../../scripts/ui.js";
 
 // Adds the ability to save and add multiple nodes as a template
 // To save:
@@ -15,12 +15,12 @@ import { ComfyDialog, $el } from "../../scripts/ui.js";
 // Right click the canvas
 // Node templates -> Manage
 
-const id = "Comfy.NodeTemplates";
+const id = "Miki.NodeTemplates";
 
-class ManageTemplates extends ComfyDialog {
+class ManageTemplates extends MikiDialog {
 	constructor() {
 		super();
-		this.element.classList.add("comfy-manage-templates");
+		this.element.classList.add("Miki-manage-templates");
 		this.templates = this.load();
 
 		this.importInput = $el("input", {

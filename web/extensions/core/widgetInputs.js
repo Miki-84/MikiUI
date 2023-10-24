@@ -1,4 +1,4 @@
-import { ComfyWidgets, addValueControlWidget } from "../../scripts/widgets.js";
+import { MikiWidgets, addValueControlWidget } from "../../scripts/widgets.js";
 import { app } from "../../scripts/app.js";
 
 const CONVERTED_TYPE = "converted-widget";
@@ -122,7 +122,7 @@ function isValidCombo(combo, obj) {
 }
 
 app.registerExtension({
-	name: "Comfy.WidgetInputs",
+	name: "Miki.WidgetInputs",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
 		// Add menu options to conver to/from widgets
 		const origGetExtraMenuOptions = nodeType.prototype.getExtraMenuOptions;
@@ -250,8 +250,8 @@ app.registerExtension({
 			const input = this.inputs[slot];
 			if (!input.widget || !input[ignoreDblClick]) {
 				// Not a widget input or already handled input
-				if (!(input.type in ComfyWidgets) && !(input.widget[GET_CONFIG]?.()?.[0] instanceof Array)) {
-					return r; //also Not a ComfyWidgets input or combo (do nothing)
+				if (!(input.type in MikiWidgets) && !(input.widget[GET_CONFIG]?.()?.[0] instanceof Array)) {
+					return r; //also Not a MikiWidgets input or combo (do nothing)
 				}
 			}
 
@@ -401,7 +401,7 @@ app.registerExtension({
 
 				// No widget, we cant connect
 				if (!input.widget) {
-					if (!(input.type in ComfyWidgets)) return false;
+					if (!(input.type in MikiWidgets)) return false;
 				}
 
 				if (this.outputs[slot].links?.length) {
@@ -423,7 +423,7 @@ app.registerExtension({
 
 				let widget;
 				if (!input.widget) {
-					if (!(input.type in ComfyWidgets)) return;
+					if (!(input.type in MikiWidgets)) return;
 					widget = { name: input.name, [GET_CONFIG]: () => [input.type, {}] }; //fake widget
 				} else {
 					widget = input.widget;
@@ -449,8 +449,8 @@ app.registerExtension({
 				}
 
 				let widget;
-				if (type in ComfyWidgets) {
-					widget = (ComfyWidgets[type](this, "value", inputData, app) || {}).widget;
+				if (type in MikiWidgets) {
+					widget = (MikiWidgets[type](this, "value", inputData, app) || {}).widget;
 				} else {
 					widget = this.addWidget(type, "value", null, () => {}, {});
 				}

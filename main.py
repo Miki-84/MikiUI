@@ -1,5 +1,5 @@
-import comfy.options
-comfy.options.enable_args_parsing()
+import Miki.options
+Miki.options.enable_args_parsing()
 
 import os
 import importlib.util
@@ -53,7 +53,7 @@ import shutil
 import threading
 import gc
 
-from comfy.cli_args import args
+from Miki.cli_args import args
 
 if os.name == "nt":
     import logging
@@ -66,25 +66,25 @@ if __name__ == "__main__":
 
     import cuda_malloc
 
-import comfy.utils
+import Miki.utils
 import yaml
 
 import execution
 import server
 from server import BinaryEventTypes
 from nodes import init_custom_nodes
-import comfy.model_management
+import Miki.model_management
 
 def cuda_malloc_warning():
-    device = comfy.model_management.get_torch_device()
-    device_name = comfy.model_management.get_torch_device_name(device)
+    device = Miki.model_management.get_torch_device()
+    device_name = Miki.model_management.get_torch_device_name(device)
     cuda_malloc_warning = False
     if "cudaMallocAsync" in device_name:
         for b in cuda_malloc.blacklist:
             if b in device_name:
                 cuda_malloc_warning = True
         if cuda_malloc_warning:
-            print("\nWARNING: this card most likely does not support cuda-malloc, if you get \"CUDA error\" please run ComfyUI with: --disable-cuda-malloc\n")
+            print("\nWARNING: this card most likely does not support cuda-malloc, if you get \"CUDA error\" please run Mikiui with: --disable-cuda-malloc\n")
 
 def prompt_worker(q, server):
     e = execution.PromptExecutor(server)
@@ -99,7 +99,7 @@ def prompt_worker(q, server):
 
         print("Prompt executed in {:.2f} seconds".format(time.perf_counter() - execution_start_time))
         gc.collect()
-        comfy.model_management.soft_empty_cache()
+        Miki.model_management.soft_empty_cache()
 
 async def run(server, address='', port=8188, verbose=True, call_on_start=None):
     await asyncio.gather(server.start(address, port, verbose, call_on_start), server.publish_loop())
@@ -107,11 +107,11 @@ async def run(server, address='', port=8188, verbose=True, call_on_start=None):
 
 def hijack_progress(server):
     def hook(value, total, preview_image):
-        comfy.model_management.throw_exception_if_processing_interrupted()
+        Miki.model_management.throw_exception_if_processing_interrupted()
         server.send_sync("progress", {"value": value, "max": total}, server.client_id)
         if preview_image is not None:
             server.send_sync(BinaryEventTypes.UNENCODED_PREVIEW_IMAGE, preview_image, server.client_id)
-    comfy.utils.set_progress_bar_global_hook(hook)
+    Miki.utils.set_progress_bar_global_hook(hook)
 
 
 def cleanup_temp():

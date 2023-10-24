@@ -14,11 +14,11 @@ function* walkSync(dir) {
 }
 
 /**
- * @typedef { import("../../web/types/comfy").ComfyObjectInfo } ComfyObjectInfo
+ * @typedef { import("../../web/types/Miki").MikiObjectInfo } MikiObjectInfo
  */
 
 /**
- * @param { { mockExtensions?: string[], mockNodeDefs?: Record<string, ComfyObjectInfo> } } config
+ * @param { { mockExtensions?: string[], mockNodeDefs?: Record<string, MikiObjectInfo> } } config
  */
 export function mockApi({ mockExtensions, mockNodeDefs } = {}) {
 	if (!mockExtensions) {

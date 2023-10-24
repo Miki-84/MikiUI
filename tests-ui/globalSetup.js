@@ -10,5 +10,5 @@ module.exports = async function () {
 
 	HTMLCanvasElement.prototype.getContext = nop;
 
-	localStorage["Comfy.Settings.Comfy.Logging.Enabled"] = "false";
+	localStorage["Miki.Settings.Miki.Logging.Enabled"] = "false";
 };

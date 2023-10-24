@@ -44,13 +44,13 @@ async function setup() {
 			console.log(i + "/30", error);
 			if (i === 0) {
 				// Start the server on first iteration if it fails to connect
-				console.log("Starting ComfyUI server...");
+				console.log("Starting Mikiui server...");
 
 				let python = resolve("../../python_embeded/python.exe");
 				let args;
 				let cwd;
 				if (existsSync(python)) {
-					args = ["-s", "ComfyUI/main.py"];
+					args = ["-s", "Mikiui/main.py"];
 					cwd = "../..";
 				} else {
 					python = "python";

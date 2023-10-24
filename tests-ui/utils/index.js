@@ -27,7 +27,7 @@ export async function checkBeforeAndAfterReload(graph, cb) {
  * @param { string } name 
  * @param { Record<string, string | [string | string[], any]> } input 
  * @param { (string | string[])[] | Record<string, string | string[]> } output
- * @returns { Record<string, import("../../web/types/comfy").ComfyObjectInfo> } 
+ * @returns { Record<string, import("../../web/types/Miki").MikiObjectInfo> } 
  */
 export function makeNodeDef(name, input, output = {}) {
 	const nodeDef = {

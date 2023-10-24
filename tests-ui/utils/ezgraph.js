@@ -352,7 +352,7 @@ export class EzGraph {
 
 export const Ez = {
 	/**
-	 * Quickly build and interact with a ComfyUI graph
+	 * Quickly build and interact with a Mikiui graph
 	 * @example
 	 * const { ez, graph } = Ez.graph(app);
 	 * graph.clear();

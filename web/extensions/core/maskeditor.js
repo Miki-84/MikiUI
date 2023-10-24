@@ -1,6 +1,6 @@
 import { app } from "../../scripts/app.js";
-import { ComfyDialog, $el } from "../../scripts/ui.js";
-import { ComfyApp } from "../../scripts/app.js";
+import { MikiDialog, $el } from "../../scripts/ui.js";
+import { MikiApp } from "../../scripts/app.js";
 import { api } from "../../scripts/api.js"
 import { ClipspaceDialog } from "./clipspace.js";
 
@@ -41,11 +41,11 @@ async function uploadMask(filepath, formData) {
 		console.error('Error:', error);
 	});
 
-	ComfyApp.clipspace.imgs[ComfyApp.clipspace['selectedIndex']] = new Image();
-	ComfyApp.clipspace.imgs[ComfyApp.clipspace['selectedIndex']].src = api.apiURL("/view?" + new URLSearchParams(filepath).toString() + app.getPreviewFormatParam());
+	MikiApp.clipspace.imgs[MikiApp.clipspace['selectedIndex']] = new Image();
+	MikiApp.clipspace.imgs[MikiApp.clipspace['selectedIndex']].src = api.apiURL("/view?" + new URLSearchParams(filepath).toString() + app.getPreviewFormatParam());
 
-	if(ComfyApp.clipspace.images)
-		ComfyApp.clipspace.images[ComfyApp.clipspace['selectedIndex']] = filepath;
+	if(MikiApp.clipspace.images)
+		MikiApp.clipspace.images[MikiApp.clipspace['selectedIndex']] = filepath;
 
 	ClipspaceDialog.invalidatePreview();
 }
@@ -71,7 +71,7 @@ function prepareRGB(image, backupCanvas, backupCtx) {
 	backupCtx.putImageData(backupData, 0, 0);
 }
 
-class MaskEditorDialog extends ComfyDialog {
+class MaskEditorDialog extends MikiDialog {
 	static instance = null;
 
 	static getInstance() {
@@ -86,8 +86,8 @@ class MaskEditorDialog extends ComfyDialog {
 
 	constructor() {
 		super();
-		this.element = $el("div.comfy-modal", { parent: document.body }, 
-			[ $el("div.comfy-modal-content", 
+		this.element = $el("div.Miki-modal", { parent: document.body }, 
+			[ $el("div.Miki-modal-content", 
 				[...this.createButtons()]),
 			]);
 	}
@@ -124,7 +124,7 @@ class MaskEditorDialog extends ComfyDialog {
 		divElement.style.fontFamily = "sans-serif";
 		divElement.style.marginRight = "4px";
 		divElement.style.color = "var(--input-text)";
-		divElement.style.backgroundColor = "var(--comfy-input-bg)";
+		divElement.style.backgroundColor = "var(--Miki-input-bg)";
 		divElement.style.borderRadius = "8px";
 		divElement.style.borderColor = "var(--border-color)";
 		divElement.style.borderStyle = "solid";
@@ -252,7 +252,7 @@ class MaskEditorDialog extends ComfyDialog {
 			mutations.forEach(function(mutation) {
 					if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
 						if(self.last_display_style && self.last_display_style != 'none' && self.element.style.display == 'none') {
-							ComfyApp.onClipspaceEditorClosed();
+							MikiApp.onClipspaceEditorClosed();
 						}
 
 						self.last_display_style = self.element.style.display;
@@ -266,7 +266,7 @@ class MaskEditorDialog extends ComfyDialog {
 
 		this.setImages(this.imgCanvas, this.backupCanvas);
 
-		if(ComfyApp.clipspace_return_node) {
+		if(MikiApp.clipspace_return_node) {
 			this.saveButton.innerText = "Save to node";
 		}
 		else {
@@ -323,7 +323,7 @@ class MaskEditorDialog extends ComfyDialog {
 			maskCtx.drawImage(backupCanvas, 0, 0, backupCanvas.width, backupCanvas.height, 0, 0, maskCanvas.width, maskCanvas.height);
 		});
 
-		const filepath = ComfyApp.clipspace.images;
+		const filepath = MikiApp.clipspace.images;
 
 		const touched_image = new Image();
 
@@ -334,7 +334,7 @@ class MaskEditorDialog extends ComfyDialog {
 			prepareRGB(touched_image, backupCanvas, backupCtx);
 		};
 
-		const alpha_url = new URL(ComfyApp.clipspace.imgs[ComfyApp.clipspace['selectedIndex']].src)
+		const alpha_url = new URL(MikiApp.clipspace.imgs[MikiApp.clipspace['selectedIndex']].src)
 		alpha_url.searchParams.delete('channel');
 		alpha_url.searchParams.delete('preview');
 		alpha_url.searchParams.set('channel', 'a');
@@ -345,7 +345,7 @@ class MaskEditorDialog extends ComfyDialog {
 			window.dispatchEvent(new Event('resize'));
 		};
 
-		const rgb_url = new URL(ComfyApp.clipspace.imgs[ComfyApp.clipspace['selectedIndex']].src);
+		const rgb_url = new URL(MikiApp.clipspace.imgs[MikiApp.clipspace['selectedIndex']].src);
 		rgb_url.searchParams.delete('channel');
 		rgb_url.searchParams.set('channel', 'rgb');
 		orig_image.src = rgb_url;
@@ -605,14 +605,14 @@ class MaskEditorDialog extends ComfyDialog {
 				"type": "input",
 			};
 
-		if(ComfyApp.clipspace.images)
-			ComfyApp.clipspace.images[0] = item;
+		if(MikiApp.clipspace.images)
+			MikiApp.clipspace.images[0] = item;
 
-		if(ComfyApp.clipspace.widgets) {
-			const index = ComfyApp.clipspace.widgets.findIndex(obj => obj.name === 'image');
+		if(MikiApp.clipspace.widgets) {
+			const index = MikiApp.clipspace.widgets.findIndex(obj => obj.name === 'image');
 
 			if(index >= 0)
-				ComfyApp.clipspace.widgets[index].value = item;
+				MikiApp.clipspace.widgets[index].value = item;
 		}
 
 		const dataURL = this.backupCanvas.toDataURL();
@@ -638,15 +638,15 @@ class MaskEditorDialog extends ComfyDialog {
 		this.saveButton.innerText = "Saving...";
 		this.saveButton.disabled = true;
 		await uploadMask(item, formData);
-		ComfyApp.onClipspaceEditorSave();
+		MikiApp.onClipspaceEditorSave();
 		this.close();
 	}
 }
 
 app.registerExtension({
-	name: "Comfy.MaskEditor",
+	name: "Miki.MaskEditor",
 	init(app) {
-		ComfyApp.open_maskeditor =
+		MikiApp.open_maskeditor =
 			function () {
 				const dlg = MaskEditorDialog.getInstance();
 				if(!dlg.isOpened()) {
@@ -654,7 +654,7 @@ app.registerExtension({
 				}
 			};
 
-		const context_predicate = () => ComfyApp.clipspace && ComfyApp.clipspace.imgs && ComfyApp.clipspace.imgs.length > 0
-		ClipspaceDialog.registerButton("MaskEditor", context_predicate, ComfyApp.open_maskeditor);
+		const context_predicate = () => MikiApp.clipspace && MikiApp.clipspace.imgs && MikiApp.clipspace.imgs.length > 0
+		ClipspaceDialog.registerButton("MaskEditor", context_predicate, MikiApp.open_maskeditor);
 	}
 });

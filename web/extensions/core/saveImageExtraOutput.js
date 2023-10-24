@@ -3,7 +3,7 @@ import { app } from "../../scripts/app.js";
 // Use widget values and dates in output filenames
 
 app.registerExtension({
-	name: "Comfy.SaveImageExtraOutput",
+	name: "Miki.SaveImageExtraOutput",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
 		if (nodeData.name === "SaveImage") {
 			const onNodeCreated = nodeType.prototype.onNodeCreated;

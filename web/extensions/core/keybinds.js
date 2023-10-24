@@ -1,7 +1,7 @@
 import {app} from "../../scripts/app.js";
 
 app.registerExtension({
-	name: "Comfy.Keybinds",
+	name: "Miki.Keybinds",
 	init() {
 		const keybindListener = function (event) {
 			const modifierPressed = event.ctrlKey || event.metaKey;
@@ -18,11 +18,11 @@ app.registerExtension({
 			}
 
 			const modifierKeyIdMap = {
-				s: "#comfy-save-button",
-				o: "#comfy-file-input",
-				Backspace: "#comfy-clear-button",
-				Delete: "#comfy-clear-button",
-				d: "#comfy-load-default-button",
+				s: "#Miki-save-button",
+				o: "#Miki-file-input",
+				Backspace: "#Miki-clear-button",
+				Delete: "#Miki-clear-button",
+				d: "#Miki-load-default-button",
 			};
 
 			const modifierKeybindId = modifierKeyIdMap[event.key];
@@ -41,7 +41,7 @@ app.registerExtension({
 
 			// Close out of modals using escape
 			if (event.key === "Escape") {
-				const modals = document.querySelectorAll(".comfy-modal");
+				const modals = document.querySelectorAll(".Miki-modal");
 				const modal = Array.from(modals).find(modal => window.getComputedStyle(modal).getPropertyValue("display") !== "none");
 				if (modal) {
 					modal.style.display = "none";
@@ -53,9 +53,9 @@ app.registerExtension({
 			}
 
 			const keyIdMap = {
-				q: "#comfy-view-queue-button",
-				h: "#comfy-view-history-button",
-				r: "#comfy-refresh-button",
+				q: "#Miki-view-queue-button",
+				h: "#Miki-view-history-button",
+				r: "#Miki-refresh-button",
 			};
 
 			const buttonId = keyIdMap[event.key];

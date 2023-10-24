@@ -1,8 +1,8 @@
 :root {
 	--fg-color: #000;
 	--bg-color: #fff;
-	--comfy-menu-bg: #353535;
-	--comfy-input-bg: #222;
+	--Miki-menu-bg: #353535;
+	--Miki-input-bg: #222;
 	--input-text: #ddd;
 	--descrip-text: #999;
 	--drag-text: #ccc;
@@ -33,8 +33,8 @@ body {
 	height: 100%;
 }
 
-.comfy-multiline-input {
-	background-color: var(--comfy-input-bg);
+.Miki-multiline-input {
+	background-color: var(--Miki-input-bg);
 	color: var(--input-text);
 	overflow: hidden;
 	overflow-y: auto;
@@ -45,12 +45,12 @@ body {
 	font-size: 10px;
 }
 
-.comfy-modal {
+.Miki-modal {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
 	z-index: 100; /* Sit on top */
 	padding: 30px 30px 10px 30px;
-	background-color: var(--comfy-menu-bg); /* Modal background */
+	background-color: var(--Miki-menu-bg); /* Modal background */
 	color: var(--error-text);
 	box-shadow: 0 0 20px #888888;
 	border-radius: 10px;
@@ -65,24 +65,24 @@ body {
 	font-size: 15px;
 }
 
-.comfy-modal-content {
+.Miki-modal-content {
 	display: flex;
 	flex-direction: column;
 }
 
-.comfy-modal p {
+.Miki-modal p {
 	overflow: auto;
 	white-space: pre-line; /* This will respect line breaks */
 	margin-bottom: 20px; /* Add some margin between the text and the close button*/
 }
 
-.comfy-modal select,
-.comfy-modal input[type=button],
-.comfy-modal input[type=checkbox] {
+.Miki-modal select,
+.Miki-modal input[type=button],
+.Miki-modal input[type=checkbox] {
 	margin: 3px 3px 3px 4px;
 }
 
-.comfy-menu {
+.Miki-menu {
 	font-size: 15px;
 	position: absolute;
 	top: 50%;
@@ -94,55 +94,55 @@ body {
 	flex-direction: column;
 	align-items: center;
 	color: var(--descrip-text);
-	background-color: var(--comfy-menu-bg);
+	background-color: var(--Miki-menu-bg);
 	font-family: sans-serif;
 	padding: 10px;
 	border-radius: 0 8px 8px 8px;
 	box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4);
 }
 
-.comfy-menu button,
-.comfy-modal button {
+.Miki-menu button,
+.Miki-modal button {
 	font-size: 20px;
 }
 
-.comfy-menu-btns {
+.Miki-menu-btns {
 	margin-bottom: 10px;
 	width: 100%;
 }
 
-.comfy-menu-btns button {
+.Miki-menu-btns button {
 	font-size: 10px;
 	width: 50%;
 	color: var(--descrip-text) !important;
 }
 
-.comfy-menu > button {
+.Miki-menu > button {
 	width: 100%;
 }
 
-.comfy-menu > button,
-.comfy-menu-btns button,
-.comfy-menu .comfy-list button,
-.comfy-modal button {
+.Miki-menu > button,
+.Miki-menu-btns button,
+.Miki-menu .Miki-list button,
+.Miki-modal button {
 	color: var(--input-text);
-	background-color: var(--comfy-input-bg);
+	background-color: var(--Miki-input-bg);
 	border-radius: 8px;
 	border-color: var(--border-color);
 	border-style: solid;
 	margin-top: 2px;
 }
 
-.comfy-menu > button:hover,
-.comfy-menu-btns button:hover,
-.comfy-menu .comfy-list button:hover,
-.comfy-modal button:hover,
-.comfy-settings-btn:hover {
+.Miki-menu > button:hover,
+.Miki-menu-btns button:hover,
+.Miki-menu .Miki-list button:hover,
+.Miki-modal button:hover,
+.Miki-settings-btn:hover {
 	filter: brightness(1.2);
 	cursor: pointer;
 }
 
-.comfy-menu span.drag-handle {
+.Miki-menu span.drag-handle {
 	width: 10px;
 	height: 20px;
 	display: inline-block;
@@ -163,53 +163,53 @@ body {
 	left: 0;
 }
 
-.comfy-menu span.drag-handle::after {
+.Miki-menu span.drag-handle::after {
 	content: '.. .. ..';
 }
 
-.comfy-queue-btn {
+.Miki-queue-btn {
 	width: 100%;
 }
 
-.comfy-list {
+.Miki-list {
 	color: var(--descrip-text);
-	background-color: var(--comfy-menu-bg);
+	background-color: var(--Miki-menu-bg);
 	margin-bottom: 10px;
 	border-color: var(--border-color);
 	border-style: solid;
 }
 
-.comfy-list-items {
+.Miki-list-items {
 	overflow-y: scroll;
 	max-height: 100px;
 	min-height: 25px;
-	background-color: var(--comfy-input-bg);
+	background-color: var(--Miki-input-bg);
 	padding: 5px;
 }
 
-.comfy-list h4 {
+.Miki-list h4 {
 	min-width: 160px;
 	margin: 0;
 	padding: 3px;
 	font-weight: normal;
 }
 
-.comfy-list-items button {
+.Miki-list-items button {
 	font-size: 10px;
 }
 
-.comfy-list-actions {
+.Miki-list-actions {
 	margin: 5px;
 	display: flex;
 	gap: 5px;
 	justify-content: center;
 }
 
-.comfy-list-actions button {
+.Miki-list-actions button {
 	font-size: 12px;
 }
 
-button.comfy-settings-btn {
+button.Miki-settings-btn {
 	background-color: rgba(0, 0, 0, 0);
 	font-size: 12px;
 	padding: 0;
@@ -218,43 +218,43 @@ button.comfy-settings-btn {
 	border: none;
 }
 
-button.comfy-queue-btn {
+button.Miki-queue-btn {
 	margin: 6px 0 !important;
 }
 
-.comfy-modal.comfy-settings,
-.comfy-modal.comfy-manage-templates {
+.Miki-modal.Miki-settings,
+.Miki-modal.Miki-manage-templates {
 	text-align: center;
 	font-family: sans-serif;
 	color: var(--descrip-text);
 	z-index: 99;
 }
 
-.comfy-modal.comfy-settings input[type="range"] {
+.Miki-modal.Miki-settings input[type="range"] {
 	vertical-align: middle;
 }
 
-.comfy-modal.comfy-settings input[type="range"] + input[type="number"] {
+.Miki-modal.Miki-settings input[type="range"] + input[type="number"] {
 	width: 3.5em;
 }
 
-.comfy-modal input,
-.comfy-modal select {
+.Miki-modal input,
+.Miki-modal select {
 	color: var(--input-text);
-	background-color: var(--comfy-input-bg);
+	background-color: var(--Miki-input-bg);
 	border-radius: 8px;
 	border-color: var(--border-color);
 	border-style: solid;
 	font-size: inherit;
 }
 
-.comfy-tooltip-indicator {
+.Miki-tooltip-indicator {
 	text-decoration: underline;
 	text-decoration-style: dashed;
 }
 
 @media only screen and (max-height: 850px) {
-	.comfy-menu {
+	.Miki-menu {
 		top: 0 !important;
 		bottom: 0 !important;
 		left: auto !important;
@@ -262,7 +262,7 @@ button.comfy-queue-btn {
 		border-radius: 0;
 	}
 
-	.comfy-menu span.drag-handle {
+	.Miki-menu span.drag-handle {
 		visibility: hidden
 	}
 }
@@ -271,7 +271,7 @@ button.comfy-queue-btn {
 
 .graphdialog {
 	min-height: 1em;
-	background-color: var(--comfy-menu-bg);
+	background-color: var(--Miki-menu-bg);
 }
 
 .graphdialog .name {
@@ -288,7 +288,7 @@ button.comfy-queue-btn {
 }
 
 .graphdialog input, .graphdialog textarea, .graphdialog select {
-	background-color: var(--comfy-input-bg);
+	background-color: var(--Miki-input-bg);
 	border: 2px solid;
 	border-color: var(--border-color);
 	color: var(--input-text);
@@ -305,16 +305,16 @@ dialog::backdrop {
 	background: rgba(0, 0, 0, 0.5);
 }
 
-#comfy-settings-dialog {
+#Miki-settings-dialog {
 	padding: 0;
 	width: 41rem;
 }
 
-#comfy-settings-dialog tr > td:first-child {
+#Miki-settings-dialog tr > td:first-child {
 	text-align: right;
 }
 
-#comfy-settings-dialog button {
+#Miki-settings-dialog button {
 	background-color: var(--bg-color);
 	border: 1px var(--border-color) solid;
 	border-radius: 0;
@@ -323,20 +323,20 @@ dialog::backdrop {
 	padding: 0.5rem;
 }
 
-#comfy-settings-dialog button:hover {
+#Miki-settings-dialog button:hover {
 	background-color: var(--tr-odd-bg-color);
 }
 
 /* General CSS for tables */
 
-.comfy-table {
+.Miki-table {
 	border-collapse: collapse;
 	color: var(--input-text);
 	font-family: Arial, sans-serif;
 	width: 100%;
 }
 
-.comfy-table caption {
+.Miki-table caption {
 	background-color: var(--bg-color);
 	color: var(--input-text);
 	font-size: 1rem;
@@ -345,16 +345,16 @@ dialog::backdrop {
 	text-align: center;
 }
 
-.comfy-table tr:nth-child(even) {
+.Miki-table tr:nth-child(even) {
 	background-color: var(--tr-even-bg-color);
 }
 
-.comfy-table tr:nth-child(odd) {
+.Miki-table tr:nth-child(odd) {
 	background-color: var(--tr-odd-bg-color);
 }
 
-.comfy-table td,
-.comfy-table th {
+.Miki-table td,
+.Miki-table th {
 	border: 1px solid var(--border-color);
 	padding: 8px;
 }
@@ -381,28 +381,28 @@ dialog::backdrop {
 .litegraph.litecontextmenu,
 .litegraph.litecontextmenu.dark {
 	z-index: 9999 !important;
-	background-color: var(--comfy-menu-bg) !important;
+	background-color: var(--Miki-menu-bg) !important;
 	filter: brightness(95%);
 }
 
 .litegraph.litecontextmenu .litemenu-entry:hover:not(.disabled):not(.separator) {
-	background-color: var(--comfy-menu-bg) !important;
+	background-color: var(--Miki-menu-bg) !important;
 	filter: brightness(155%);
 	color: var(--input-text);
 }
 
 .litegraph.litecontextmenu .litemenu-entry.submenu,
 .litegraph.litecontextmenu.dark .litemenu-entry.submenu {
-	background-color: var(--comfy-menu-bg) !important;
+	background-color: var(--Miki-menu-bg) !important;
 	color: var(--input-text);
 }
 
 .litegraph.litecontextmenu input {
-	background-color: var(--comfy-input-bg) !important;
+	background-color: var(--Miki-input-bg) !important;
 	color: var(--input-text) !important;
 }
 
-.comfy-context-menu-filter {
+.Miki-context-menu-filter {
 	box-sizing: border-box;
 	border: 1px solid #999;
 	margin: 0 0 5px 5px;
@@ -413,20 +413,20 @@ dialog::backdrop {
 
 .litegraph.litesearchbox {
 	z-index: 9999 !important;
-	background-color: var(--comfy-menu-bg) !important;
+	background-color: var(--Miki-menu-bg) !important;
 	overflow: hidden;
 	display: block;
 }
 
 .litegraph.litesearchbox input,
 .litegraph.litesearchbox select {
-	background-color: var(--comfy-input-bg) !important;
+	background-color: var(--Miki-input-bg) !important;
 	color: var(--input-text);
 }
 
 .litegraph.lite-search-item {
 	color: var(--input-text);
-	background-color: var(--comfy-input-bg);
+	background-color: var(--Miki-input-bg);
 	filter: brightness(80%);
 	padding-left: 0.2em;
 }

@@ -11,7 +11,7 @@ import gc
 import torch
 import nodes
 
-import comfy.model_management
+import Miki.model_management
 
 def get_input_data(inputs, class_def, unique_id, outputs={}, prompt={}, extra_data={}):
     valid_inputs = class_def.INPUT_TYPES()
@@ -156,7 +156,7 @@ def recursive_execute(server, prompt, outputs, current_item, extra_data, execute
             outputs_ui[unique_id] = output_ui
             if server.client_id is not None:
                 server.send_sync("executed", { "node": unique_id, "output": output_ui, "prompt_id": prompt_id }, server.client_id)
-    except comfy.model_management.InterruptProcessingException as iex:
+    except Miki.model_management.InterruptProcessingException as iex:
         logging.info("Processing interrupted")
 
         # skip formatting inputs/outputs
@@ -279,7 +279,7 @@ class PromptExecutor:
 
         # First, send back the status to the frontend depending
         # on the exception type
-        if isinstance(ex, comfy.model_management.InterruptProcessingException):
+        if isinstance(ex, Miki.model_management.InterruptProcessingException):
             mes = {
                 "prompt_id": prompt_id,
                 "node_id": node_id,
@@ -356,7 +356,7 @@ class PromptExecutor:
                     d = self.outputs_ui.pop(x)
                     del d
 
-            comfy.model_management.cleanup_models()
+            Miki.model_management.cleanup_models()
             if self.server.client_id is not None:
                 self.server.send_sync("execution_cached", { "nodes": list(current_outputs) , "prompt_id": prompt_id}, self.server.client_id)
             executed = set()

@@ -1,4 +1,4 @@
-class ComfyApi extends EventTarget {
+class MikiApi extends EventTarget {
 	#registered = new Set();
 
 	constructor() {
@@ -317,4 +317,4 @@ class ComfyApi extends EventTarget {
 	}
 }
 
-export const api = new ComfyApi();
+export const api = new MikiApi();
